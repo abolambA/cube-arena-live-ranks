@@ -79,12 +79,12 @@ const PodiumDisplay = ({ topThree }: PodiumDisplayProps) => {
           {podiumPositions[2]?.name ? (
             <>
               <div className="podium-block bg-amber-800">3</div>
-              <div className="flex flex-col items-center justify-center py-4 px-2">
-                <div className="bg-white text-amber-700 rounded-full w-14 h-14 flex items-center justify-center mb-2">
+              <div className="flex flex-col items-center justify-center py-2 px-2">
+                <div className="bg-white text-amber-700 rounded-full w-14 h-14 flex items-center justify-center mb-1">
                   <span className="text-lg font-bold">🥉</span>
                 </div>
-                <p className="text-center font-semibold text-amber-900">{podiumPositions[2].name}</p>
-                <p className="timer-text text-amber-900">{formatTime(podiumPositions[2].average)}</p>
+                <p className="text-center font-semibold text-amber-900 text-sm">{podiumPositions[2].name}</p>
+                <p className="timer-text text-amber-900 text-sm">{formatTime(podiumPositions[2].average)}</p>
               </div>
             </>
           ) : (
