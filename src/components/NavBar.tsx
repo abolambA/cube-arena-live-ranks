@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +18,14 @@ const NavBar = () => {
     <nav className="bg-cube-purple-darkest/90 backdrop-blur-md text-white py-4 px-4 md:px-8 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center gap-2">
-          <div className="bg-gradient-to-tr from-cube-purple to-cube-purple-dark p-2 rounded-md">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21 16.5C21 19.538 18.538 22 15.5 22C12.462 22 10 19.538 10 16.5C10 13.462 12.462 11 15.5 11C18.538 11 21 13.462 21 16.5Z" fill="currentColor" fillOpacity="0.2"/>
-              <path d="M2 7.5C2 10.538 4.462 13 7.5 13C10.538 13 13 10.538 13 7.5C13 4.462 10.538 2 7.5 2C4.462 2 2 4.462 2 7.5Z" fill="currentColor" fillOpacity="0.6"/>
-              <path d="M16 3H8C6.34315 3 5 4.34315 5 6V14C5 15.6569 6.34315 17 8 17H16C17.6569 17 19 15.6569 19 14V6C19 4.34315 17.6569 3 16 3Z" fill="currentColor"/>
-            </svg>
+          <div className="rounded-md overflow-hidden">
+            <img 
+              src="/lovable-uploads/aa920ae2-d856-4cfb-8a10-c8d64f5cc05b.png" 
+              alt="Syria SpeedCubing Logo" 
+              className="h-10 w-10"
+            />
           </div>
-          <span className="text-xl font-bold">CubeArena</span>
+          <span className="text-xl font-bold">Syria SpeedCubing Open 2025</span>
         </Link>
         
         <div className="flex items-center gap-4">
@@ -46,8 +46,11 @@ const NavBar = () => {
           </DropdownMenu>
           
           <Link to="/admin">
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 hover:text-white">
-              {t('adminLogin')}
+            <Button 
+              className="bg-[#006847] hover:bg-[#006847]/90 text-white border-2 border-white relative overflow-hidden group"
+            >
+              <span className="absolute inset-0 flex items-center justify-center w-full h-full bg-gradient-to-b from-[#006847] via-white to-[#ce1126] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="relative z-10">{t('adminLogin')}</span>
             </Button>
           </Link>
         </div>

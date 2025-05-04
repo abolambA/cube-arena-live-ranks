@@ -25,13 +25,20 @@ const Login = () => {
   };
   
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-gradient-to-b from-[#006847] via-white to-[#ce1126]">
       <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+        <Card className="w-full max-w-md shadow-lg" dir={language === 'ar' ? 'rtl' : 'ltr'}>
           <CardHeader className="space-y-1">
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/lovable-uploads/aa920ae2-d856-4cfb-8a10-c8d64f5cc05b.png" 
+                alt="Syria SpeedCubing Logo" 
+                className="h-16 w-16"
+              />
+            </div>
             <CardTitle className="text-2xl text-center">{t('login')}</CardTitle>
             <CardDescription className="text-center">
-              {t('adminPanel')}
+              Syria SpeedCubing Open 2025 - {t('adminPanel')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -44,11 +51,16 @@ const Login = () => {
                 <Label htmlFor="password">{t('password')}</Label>
                 <Input id="password" type="password" required />
               </div>
-              <Button type="submit" className="w-full">{t('login')}</Button>
+              <Button 
+                type="submit" 
+                className="w-full bg-[#006847] hover:bg-[#006847]/90 text-white"
+              >
+                {t('login')}
+              </Button>
             </form>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <Link to="/" className="text-sm text-cube-purple hover:underline">
+            <Link to="/" className="text-sm text-[#ce1126] hover:underline">
               {t('viewLeaderboard')}
             </Link>
           </CardFooter>
