@@ -50,7 +50,7 @@ const NavBar = () => {
               className="bg-[#006847] hover:bg-[#006847]/90 text-white border-2 border-white relative overflow-hidden group"
             >
               <span className="absolute inset-0 flex items-center justify-center w-full h-full bg-gradient-to-b from-[#006847] via-white to-[#ce1126] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              <span className="relative z-10">{t('adminLogin')}</span>
+              <span className="relative z-10 transition-colors duration-300 group-hover:text-black">{t('adminLogin')}</span>
             </Button>
           </Link>
         </div>
