@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -21,16 +21,31 @@ const Status = () => {
   const { toast } = useToast();
   const [status, setStatus] = useState<'not-started' | 'in-progress' | 'finished'>('not-started');
   
+  // Load initial status from localStorage
+  useEffect(() => {
+    const savedStatus = localStorage.getItem('competitionStatus');
+    if (savedStatus) {
+      setStatus(savedStatus as 'not-started' | 'in-progress' | 'finished');
+    }
+  }, []);
+  
   const handleStatusChange = (value: 'not-started' | 'in-progress' | 'finished') => {
     setStatus(value);
   };
   
   const handleSubmit = () => {
     // In a real app, this would save to Firebase
+    // For now, save to localStorage to simulate database
+    localStorage.setItem('competitionStatus', status);
+    
     toast({
       title: "Status Updated",
       description: `Competition status has been updated to "${getStatusText()}"`,
     });
+    
+    // In a Firebase implementation, we would use:
+    // const statusRef = ref(db, 'competition/status');
+    // set(statusRef, status);
   };
   
   const getStatusText = () => {

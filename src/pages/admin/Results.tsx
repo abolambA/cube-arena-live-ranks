@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useLanguage } from '@/hooks/use-language';
 import { useToast } from "@/hooks/use-toast";
+import { Event, DEFAULT_EVENTS } from '@/models/event';
 
 // Mock data for initial development
 const mockCompetitors = [
@@ -30,16 +31,26 @@ const mockCompetitors = [
   { id: '3', name: 'Michael Chen' },
 ];
 
-const events = ['3x3', '2x2', '4x4', 'pyraminx', 'skewb'];
-
 const Results = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const [events, setEvents] = useState<Event[]>([]);
   const [selectedCompetitor, setSelectedCompetitor] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
   const [solves, setSolves] = useState<(string | null)[]>(Array(5).fill(null));
   const [isDNF, setIsDNF] = useState<boolean[]>(Array(5).fill(false));
   const [calculatedAverage, setCalculatedAverage] = useState<string | null>(null);
+  
+  // Load events from localStorage
+  useEffect(() => {
+    const savedEvents = localStorage.getItem('events');
+    const loadedEvents = savedEvents 
+      ? JSON.parse(savedEvents) 
+      : DEFAULT_EVENTS;
+    
+    // Only show active events
+    setEvents(loadedEvents.filter((event: Event) => event.active));
+  }, []);
   
   const handleSolveChange = (index: number, value: string) => {
     const newSolves = [...solves];
@@ -117,18 +128,64 @@ const Results = () => {
       return;
     }
     
-    // In a real app, this would save to Firebase
-    toast({
-      title: "Results Saved",
-      description: `Results for ${mockCompetitors.find(c => c.id === selectedCompetitor)?.name} in ${selectedEvent} have been saved`,
-    });
+    // Get best solve time
+    const bestTime = getBestSolve(solves);
     
-    // Reset form
-    setSelectedCompetitor('');
-    setSelectedEvent('');
-    setSolves(Array(5).fill(null));
-    setIsDNF(Array(5).fill(false));
-    setCalculatedAverage(null);
+    // Create the result object
+    const result = {
+      id: selectedCompetitor,
+      name: mockCompetitors.find(c => c.id === selectedCompetitor)?.name,
+      average: calculatedAverage === 'DNF' ? 'DNF' : parseFloat(calculatedAverage || '0'),
+      solves: solves,
+      best: bestTime
+    };
+    
+    // In a real app, this would save to Firebase
+    // For demonstration, save to localStorage to show real-time updates
+    try {
+      // Get existing results for this event
+      const existingResultsStr = localStorage.getItem(`results_${selectedEvent}`);
+      let existingResults = existingResultsStr ? JSON.parse(existingResultsStr) : [];
+      
+      // Update or add the new result
+      const existingIndex = existingResults.findIndex((r: any) => r.id === selectedCompetitor);
+      if (existingIndex >= 0) {
+        existingResults[existingIndex] = result;
+      } else {
+        existingResults.push(result);
+      }
+      
+      // Save back to localStorage
+      localStorage.setItem(`results_${selectedEvent}`, JSON.stringify(existingResults));
+      
+      toast({
+        title: "Results Saved",
+        description: `Results for ${mockCompetitors.find(c => c.id === selectedCompetitor)?.name} in ${selectedEvent} have been saved`,
+      });
+      
+      // Reset form
+      setSelectedCompetitor('');
+      setSelectedEvent('');
+      setSolves(Array(5).fill(null));
+      setIsDNF(Array(5).fill(false));
+      setCalculatedAverage(null);
+      
+    } catch (error) {
+      toast({
+        title: "Error Saving Results",
+        description: "There was an error saving the results",
+        variant: "destructive",
+      });
+      console.error("Error saving results:", error);
+    }
+  };
+  
+  const getBestSolve = (currentSolves: (string | null)[]) => {
+    const numericSolves = currentSolves
+      .filter(solve => typeof solve === 'string' && solve !== 'DNF' && !isNaN(parseFloat(solve)))
+      .map(solve => parseFloat(solve as string));
+      
+    return numericSolves.length > 0 ? Math.min(...numericSolves) : 'DNF';
   };
   
   return (
@@ -154,7 +211,7 @@ const Results = () => {
                 <Label htmlFor="competitor">{t('competitor')}</Label>
                 <Select value={selectedCompetitor} onValueChange={setSelectedCompetitor}>
                   <SelectTrigger id="competitor">
-                    <SelectValue placeholder="Select competitor" />
+                    <SelectValue placeholder={t('selectCompetitor')} />
                   </SelectTrigger>
                   <SelectContent>
                     {mockCompetitors.map(competitor => (
@@ -174,8 +231,8 @@ const Results = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {events.map(event => (
-                      <SelectItem key={event} value={event}>
-                        {event}
+                      <SelectItem key={event.id} value={event.code}>
+                        {event.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

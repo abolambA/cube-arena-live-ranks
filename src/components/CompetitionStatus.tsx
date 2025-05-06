@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/hooks/use-language';
 
@@ -11,7 +11,7 @@ interface CompetitionStatusProps {
 
 const CompetitionStatus = ({ status }: CompetitionStatusProps) => {
   const { t } = useLanguage();
-
+  
   const getStatusColor = () => {
     switch (status) {
       case 'not-started':

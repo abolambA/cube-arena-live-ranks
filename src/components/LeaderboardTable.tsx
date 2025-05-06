@@ -13,8 +13,9 @@ import { useLanguage } from '@/hooks/use-language';
 interface Competitor {
   id: string;
   name: string;
-  average: number;
+  average: number | string;
   solves: (number | string)[];
+  best?: number | string;
 }
 
 interface LeaderboardTableProps {
@@ -53,7 +54,9 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>{competitor.name}</TableCell>
                 <TableCell className="timer-text">{formatTime(competitor.average)}</TableCell>
-                <TableCell className="timer-text">{formatTime(getBestSolve(competitor.solves))}</TableCell>
+                <TableCell className="timer-text">
+                  {formatTime(competitor.best !== undefined ? competitor.best : getBestSolve(competitor.solves))}
+                </TableCell>
                 <TableCell>
                   <div className="flex gap-2 flex-wrap">
                     {competitor.solves.map((solve, i) => (
@@ -86,4 +89,3 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
 };
 
 export default LeaderboardTable;
-

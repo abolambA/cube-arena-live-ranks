@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 
 // Create a context for the language
@@ -43,8 +42,8 @@ export const useLanguage = () => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   }, [language]);
 
-  // This should include all text used in the app in both English and Arabic
-  const translations = {
+  // Dictionary of translations
+  const translations: { [key: string]: { [lang in Language]: string } } = {
     adminLogin: {
       en: 'Admin Login',
       ar: 'تسجيل دخول المسؤول'
@@ -261,6 +260,14 @@ export const useLanguage = () => {
       en: 'Logging in...',
       ar: 'جاري تسجيل الدخول...'
     },
+    noResultsWithoutEvent: {
+      en: 'Please select an event to view results',
+      ar: 'يرجى اختيار فعالية لعرض النتائج'
+    },
+    selectCompetitor: {
+      en: 'Select competitor',
+      ar: 'اختر متسابق'
+    }
   };
 
   // Function to get a translation
