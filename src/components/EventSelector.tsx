@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Select,
   SelectContent,
@@ -9,6 +9,7 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { useLanguage } from '@/hooks/use-language';
+import { Event, DEFAULT_EVENTS } from '@/models/event';
 
 interface EventSelectorProps {
   selectedEvent: string;
@@ -17,6 +18,18 @@ interface EventSelectorProps {
 
 const EventSelector = ({ selectedEvent, onEventChange }: EventSelectorProps) => {
   const { t } = useLanguage();
+  const [events, setEvents] = useState<Event[]>([]);
+  
+  // Load events from localStorage or use defaults
+  useEffect(() => {
+    const savedEvents = localStorage.getItem('events');
+    const loadedEvents = savedEvents 
+      ? JSON.parse(savedEvents) 
+      : DEFAULT_EVENTS;
+    
+    // Filter only active events
+    setEvents(loadedEvents.filter((event: Event) => event.active));
+  }, []);
 
   return (
     <div className="mb-6">
@@ -26,11 +39,11 @@ const EventSelector = ({ selectedEvent, onEventChange }: EventSelectorProps) => 
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="3x3">3x3 {t('cube')}</SelectItem>
-            <SelectItem value="2x2">2x2 {t('cube')}</SelectItem>
-            <SelectItem value="4x4">4x4 {t('cube')}</SelectItem>
-            <SelectItem value="pyraminx">Pyraminx</SelectItem>
-            <SelectItem value="skewb">Skewb</SelectItem>
+            {events.map((event) => (
+              <SelectItem key={event.id} value={event.code}>
+                {event.name}
+              </SelectItem>
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>

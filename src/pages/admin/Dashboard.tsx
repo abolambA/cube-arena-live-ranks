@@ -9,14 +9,25 @@ const AdminDashboard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   
-  // In a real app, check if user is authenticated here
+  // Check if user is authenticated
+  React.useEffect(() => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (!isAuthenticated) {
+      navigate('/admin');
+    }
+  }, [navigate]);
+  
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    navigate('/admin');
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary p-4">
       <div className="max-w-5xl mx-auto">
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-cube-purple-darker">{t('adminPanel')}</h1>
-          <Button variant="outline" onClick={() => navigate('/')}>
+          <Button variant="outline" onClick={handleLogout}>
             {t('logout')}
           </Button>
         </header>
@@ -66,6 +77,22 @@ const AdminDashboard = () => {
             <CardFooter>
               <Button asChild className="w-full">
                 <Link to="/admin/status">{t('updateStatus')}</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Events Management Card */}
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle>{t('eventManagement')}</CardTitle>
+              <CardDescription>Configure available events</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Add, edit, or disable events for the competition.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full">
+                <Link to="/admin/events">{t('events')}</Link>
               </Button>
             </CardFooter>
           </Card>

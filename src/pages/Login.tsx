@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,20 +8,46 @@ import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/hooks/use-language';
 import { useToast } from "@/hooks/use-toast";
 
+// Mock authentication for development (replace with Firebase auth)
+const mockCredentials = {
+  email: 'admin@syriaspeedcubing.com',
+  password: 'admin123'
+};
+
 const Login = () => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    
     // In a real app, this would authenticate with Firebase
-    // For now, let's use a simple mock
-    toast({
-      title: "Login Success",
-      description: "Welcome to the admin panel",
-    });
-    navigate('/admin/dashboard');
+    // For now, let's simulate authentication
+    setTimeout(() => {
+      if (email === mockCredentials.email && password === mockCredentials.password) {
+        toast({
+          title: t('login') + " " + t('success'),
+          description: t('welcomeAdmin'),
+        });
+        localStorage.setItem('isAuthenticated', 'true');
+        navigate('/admin/dashboard');
+      } else {
+        setError(t('invalidCredentials'));
+        toast({
+          title: t('login') + " " + t('failed'),
+          description: t('invalidCredentials'),
+          variant: "destructive",
+        });
+      }
+      setIsLoading(false);
+    }, 1000);
   };
   
   return (
@@ -45,17 +71,35 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">{t('email')}</Label>
-                <Input id="email" type="email" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  required 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">{t('password')}</Label>
-                <Input id="password" type="password" required />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
+              {error && (
+                <div className="text-red-500 text-sm p-2 bg-red-50 rounded-md">
+                  {error}
+                </div>
+              )}
               <Button 
                 type="submit" 
                 className="w-full bg-[#006847] hover:bg-[#006847]/90 text-white"
+                disabled={isLoading}
               >
-                {t('login')}
+                {isLoading ? t('loggingIn') : t('login')}
               </Button>
             </form>
           </CardContent>
@@ -71,3 +115,4 @@ const Login = () => {
 };
 
 export default Login;
+

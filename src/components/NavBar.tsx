@@ -10,9 +10,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLanguage } from '@/hooks/use-language';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const NavBar = () => {
   const { language, setLanguage, t } = useLanguage();
+  const isMobile = useIsMobile();
 
   return (
     <nav className="bg-cube-purple-darkest/90 backdrop-blur-md text-white py-4 px-4 md:px-8 sticky top-0 z-50">
@@ -25,7 +27,9 @@ const NavBar = () => {
               className="h-10 w-10"
             />
           </div>
-          <span className="text-xl font-bold">Syria SpeedCubing Open 2025</span>
+          <span className="text-xl font-bold">
+            {isMobile ? 'SSO 2025' : 'Syria SpeedCubing Open 2025'}
+          </span>
         </Link>
         
         <div className="flex items-center gap-4">
@@ -60,3 +64,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+

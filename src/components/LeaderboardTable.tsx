@@ -29,6 +29,11 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
     return time.toFixed(2);
   };
 
+  const getBestSolve = (solves: (number | string)[]) => {
+    const numericSolves = solves.filter(solve => typeof solve === 'number') as number[];
+    return numericSolves.length > 0 ? Math.min(...numericSolves) : 'N/A';
+  };
+
   return (
     <div className="w-full overflow-x-auto animate-fade-in">
       <Table dir={language === 'ar' ? 'rtl' : 'ltr'}>
@@ -37,6 +42,7 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
             <TableHead className="w-16">{t('rank')}</TableHead>
             <TableHead>{t('name')}</TableHead>
             <TableHead>{t('average')}</TableHead>
+            <TableHead>{t('bestTime')}</TableHead>
             <TableHead>{t('solves')}</TableHead>
           </TableRow>
         </TableHeader>
@@ -47,6 +53,7 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
                 <TableCell className="font-medium">{index + 1}</TableCell>
                 <TableCell>{competitor.name}</TableCell>
                 <TableCell className="timer-text">{formatTime(competitor.average)}</TableCell>
+                <TableCell className="timer-text">{formatTime(getBestSolve(competitor.solves))}</TableCell>
                 <TableCell>
                   <div className="flex gap-2 flex-wrap">
                     {competitor.solves.map((solve, i) => (
@@ -67,7 +74,7 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4} className="text-center py-10">
+              <TableCell colSpan={5} className="text-center py-10">
                 {t('noCompetitors')}
               </TableCell>
             </TableRow>
@@ -79,3 +86,4 @@ const LeaderboardTable = ({ competitors }: LeaderboardTableProps) => {
 };
 
 export default LeaderboardTable;
+

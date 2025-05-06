@@ -1,9 +1,40 @@
-import { useState, useEffect } from 'react';
 
+import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+
+// Create a context for the language
+type LanguageContextType = {
+  language: string;
+  setLanguage: (lang: string) => void;
+  t: (key: string) => string;
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+// Create a provider component
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
+  const languageState = useLanguage();
+  
+  return (
+    <LanguageContext.Provider value={languageState}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+// Create a hook to use the context
+export const useLanguageContext = () => {
+  const context = useContext(LanguageContext);
+  if (context === undefined) {
+    throw new Error('useLanguageContext must be used within a LanguageProvider');
+  }
+  return context;
+};
+
+// Original hook implementation
 export const useLanguage = () => {
   const [language, setLanguage] = useState(() => {
     const savedLanguage = localStorage.getItem('language');
-    return savedLanguage || 'en';
+    return savedLanguage || 'ar'; // Default to Arabic
   });
 
   useEffect(() => {
@@ -50,10 +81,138 @@ export const useLanguage = () => {
       en: 'Results',
       ar: 'النتائج'
     },
+    rank: {
+      en: 'Rank',
+      ar: 'الترتيب'
+    },
+    name: {
+      en: 'Name',
+      ar: 'الإسم'
+    },
+    solves: {
+      en: 'Solves',
+      ar: 'الحلول'
+    },
+    selectEvent: {
+      en: 'Select Event',
+      ar: 'اختر الفعالية'
+    },
+    cube: {
+      en: 'Cube',
+      ar: 'مكعب'
+    },
+    noCompetitors: {
+      en: 'No competitors found',
+      ar: 'لا يوجد متسابقين'
+    },
+    login: {
+      en: 'Login',
+      ar: 'تسجيل الدخول'
+    },
+    email: {
+      en: 'Email',
+      ar: 'البريد الإلكتروني'
+    },
+    password: {
+      en: 'Password',
+      ar: 'كلمة المرور'
+    },
+    adminPanel: {
+      en: 'Admin Panel',
+      ar: 'لوحة التحكم'
+    },
+    viewLeaderboard: {
+      en: 'View Leaderboard',
+      ar: 'عرض الترتيب'
+    },
+    logout: {
+      en: 'Logout',
+      ar: 'تسجيل الخروج'
+    },
+    competitorManagement: {
+      en: 'Competitor Management',
+      ar: 'إدارة المتسابقين'
+    },
+    addResults: {
+      en: 'Add Results',
+      ar: 'إضافة نتائج'
+    },
+    viewResults: {
+      en: 'View Results',
+      ar: 'عرض النتائج'
+    },
+    changeStatus: {
+      en: 'Change Status',
+      ar: 'تغيير الحالة'
+    },
+    updateStatus: {
+      en: 'Update Status',
+      ar: 'تحديث الحالة'
+    },
+    competitionStatus: {
+      en: 'Competition Status',
+      ar: 'حالة المسابقة'
+    },
+    notStarted: {
+      en: 'Not Started',
+      ar: 'لم تبدأ'
+    },
+    inProgress: {
+      en: 'In Progress',
+      ar: 'قيد التنفيذ'
+    },
+    finished: {
+      en: 'Finished',
+      ar: 'انتهت'
+    },
+    cancel: {
+      en: 'Cancel',
+      ar: 'إلغاء'
+    },
+    save: {
+      en: 'Save',
+      ar: 'حفظ'
+    },
+    actions: {
+      en: 'Actions',
+      ar: 'إجراءات'
+    },
+    addCompetitor: {
+      en: 'Add Competitor',
+      ar: 'إضافة متسابق'
+    },
+    leaderboard: {
+      en: 'Leaderboard',
+      ar: 'لوحة الترتيب'
+    },
+    events: {
+      en: 'Events',
+      ar: 'الفعاليات'
+    },
+    eventManagement: {
+      en: 'Event Management',
+      ar: 'إدارة الفعاليات'
+    },
+    addEvent: {
+      en: 'Add Event',
+      ar: 'إضافة فعالية'
+    },
+    eventName: {
+      en: 'Event Name',
+      ar: 'اسم الفعالية'
+    },
+    manage: {
+      en: 'Manage',
+      ar: 'إدارة'
+    },
+    bestTime: {
+      en: 'Best Time',
+      ar: 'أفضل وقت'
+    },
   };
 
   // Function to get a translation
-  const t = (key) => {
+  const t = (key: string) => {
     if (!translations[key]) {
       console.warn(`Translation missing for key: ${key}`);
       return key;
@@ -64,3 +223,4 @@ export const useLanguage = () => {
 
   return { language, setLanguage, t };
 };
+
