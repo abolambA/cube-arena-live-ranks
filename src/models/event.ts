@@ -25,4 +25,3 @@ export const DEFAULT_EVENTS: Event[] = [
   { id: '16', name: '5x5 Blindfolded', code: '555bf', active: true },
   { id: '17', name: 'Multi-Blind', code: '333mbf', active: true },
 ];
-

@@ -201,6 +201,14 @@ export const useLanguage = () => {
       en: 'Event Name',
       ar: 'اسم الفعالية'
     },
+    eventCode: {
+      en: 'Event Code',
+      ar: 'كود الفعالية'
+    },
+    active: {
+      en: 'Active',
+      ar: 'نشط'
+    },
     manage: {
       en: 'Manage',
       ar: 'إدارة'
@@ -208,6 +216,50 @@ export const useLanguage = () => {
     bestTime: {
       en: 'Best Time',
       ar: 'أفضل وقت'
+    },
+    noEvents: {
+      en: 'No events found',
+      ar: 'لا توجد فعاليات'
+    },
+    eventAdded: {
+      en: 'Event added',
+      ar: 'تمت إضافة الفعالية'
+    },
+    eventUpdated: {
+      en: 'Event updated',
+      ar: 'تم تحديث الفعالية'
+    },
+    eventRemoved: {
+      en: 'Event removed',
+      ar: 'تمت إزالة الفعالية'
+    },
+    eventDisabled: {
+      en: 'Event disabled',
+      ar: 'تم تعطيل الفعالية'
+    },
+    eventEnabled: {
+      en: 'Event enabled',
+      ar: 'تم تفعيل الفعالية'
+    },
+    success: {
+      en: 'Success',
+      ar: 'نجاح'
+    },
+    failed: {
+      en: 'Failed',
+      ar: 'فشل'
+    },
+    invalidCredentials: {
+      en: 'Invalid email or password',
+      ar: 'بريد إلكتروني أو كلمة مرور غير صالحة'
+    },
+    welcomeAdmin: {
+      en: 'Welcome to the admin panel',
+      ar: 'مرحبًا بك في لوحة التحكم'
+    },
+    loggingIn: {
+      en: 'Logging in...',
+      ar: 'جاري تسجيل الدخول...'
     },
   };
 
@@ -223,4 +275,3 @@ export const useLanguage = () => {
 
   return { language, setLanguage, t };
 };
-
