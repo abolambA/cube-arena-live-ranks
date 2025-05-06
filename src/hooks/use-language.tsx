@@ -1,4 +1,8 @@
+
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+
+// Define the Language type that was missing
+type Language = 'en' | 'ar';
 
 // Create a context for the language
 type LanguageContextType = {
