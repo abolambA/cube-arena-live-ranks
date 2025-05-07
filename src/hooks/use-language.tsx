@@ -1,8 +1,5 @@
-
 import React, { useState, useEffect, createContext, useContext, ReactNode } from 'react';
-
-// Define the Language type that was missing
-type Language = 'en' | 'ar';
+import { Language } from '@/models/types';
 
 // Create a context for the language
 type LanguageContextType = {
